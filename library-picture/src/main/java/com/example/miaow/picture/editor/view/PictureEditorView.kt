@@ -72,6 +72,7 @@ class PictureEditorView @JvmOverloads constructor(
     private var isDoubleTap = false
     private var bitmapPath: String? = null
     private var bitmapUri: Uri? = null
+    private var strokeWidth = 1f
 
     private var initScaleX = 1f
     private var initScaleY = 1f
@@ -196,6 +197,10 @@ class PictureEditorView @JvmOverloads constructor(
         graffitiLayer.undo()
     }
 
+    fun graffitiRedo(){
+        graffitiLayer.redo()
+    }
+
     fun mosaicUndo() {
         mosaicLayer.undo()
     }
@@ -231,6 +236,10 @@ class PictureEditorView @JvmOverloads constructor(
         return bitmap
     }
 
+    fun setParentScale(f: Float) {
+        strokeWidth = f
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val pointerId0 = event.getPointerId(0)
@@ -264,17 +273,18 @@ class PictureEditorView @JvmOverloads constructor(
             return true
         }
         if (graffitiLayer.onTouchEvent(layerEvent)) {
-            graffitiLayer.setParentScale(currScaleX())
+            graffitiLayer.setParentScale(strokeWidth)
             layerEvent.recycle()
             return true
         }
+        //删除贴图
         if (event.actionMasked == MotionEvent.ACTION_UP) {
             isBin = false
-            if (stickerLayerIndex != INVALID_ID && pointerId0 == pointerIndexId0) {
-                if (binRectF.contains(layerEvent.x, layerEvent.y)) {
-                    stickerLayers.remove(stickerLayers[stickerLayerIndex])
-                }
-            }
+//            if (stickerLayerIndex != INVALID_ID && pointerId0 == pointerIndexId0) {
+//                if (binRectF.contains(layerEvent.x, layerEvent.y)) {
+//                    stickerLayers.remove(stickerLayers[stickerLayerIndex])
+//                }
+//            }
             stickerLayerIndex = INVALID_ID
         }
         layerEvent.recycle()
@@ -301,13 +311,14 @@ class PictureEditorView @JvmOverloads constructor(
                 sticker.onDraw(canvas)
             }
         }
-        if (isBin) {
-            val round = BIN_ROUND / currScaleX()
-            canvas.drawRoundRect(binRectF, round, round, binPaint)
-            canvas.drawBitmap(binIcon, null, binIconRectF, null)
-            binTextPaint.textSize = binTextSize
-            canvas.drawText(BIN_TEXT, binTextX, binTextY, binTextPaint)
-        }
+        //删除贴图区域显示
+//        if (isBin) {
+//            val round = BIN_ROUND / currScaleX()
+//            canvas.drawRoundRect(binRectF, round, round, binPaint)
+//            canvas.drawBitmap(binIcon, null, binIconRectF, null)
+//            binTextPaint.textSize = binTextSize
+//            canvas.drawText(BIN_TEXT, binTextX, binTextY, binTextPaint)
+//        }
     }
 
     override fun computeScroll() {

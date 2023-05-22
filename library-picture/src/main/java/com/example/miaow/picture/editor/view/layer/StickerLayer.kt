@@ -1,6 +1,7 @@
 package com.example.miaow.picture.editor.view.layer
 
 import android.graphics.*
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
@@ -147,15 +148,16 @@ class StickerLayer(
                     }
                     val sw = stickerWidth * 0.5f / parentScaleX()
                     if (currTranslateX - sw < 0 || currTranslateX + sw > bitmapWidth) {
-                        currTranslateX = (viewWidth * 0.5f - parentTranslateX()) / parentScaleX()
+                        //贴图超过边缘回正
+//                        currTranslateX = (viewWidth * 0.5f - parentTranslateX()) / parentScaleX()
                     }
                     val sh = stickerHeight * 0.5f / parentScaleY()
                     if (currTranslateY - sh < 0 || currTranslateY + sh > bitmapHeight) {
-                        currTranslateY = if (parentTranslateY() < 0) {
-                            (viewHeight * 0.5f - parentTranslateY()) / parentScaleY()
-                        } else {
-                            min(viewHeight, bitmapHeight) * 0.5f / parentScaleY()
-                        }
+//                        currTranslateY = if (parentTranslateY() < 0) {
+//                            (viewHeight * 0.5f - parentTranslateY()) / parentScaleY()
+//                        } else {
+//                            min(viewHeight, bitmapHeight) * 0.5f / parentScaleY()
+//                        }
                     }
                     measureBitmap()
                     pointerIndexId0 = INVALID_POINTER_ID
@@ -207,10 +209,10 @@ class StickerLayer(
     }
 
     private fun measureBitmap() {
-        val stickerLeft = currTranslateX - (stickerWidth * currScale / parentScaleX() * 0.5f)
-        val stickerTop = currTranslateY - (stickerHeight * currScale / parentScaleY() * 0.5f)
-        val stickerRight = currTranslateX + (stickerWidth * currScale / parentScaleX() * 0.5f)
-        val stickerBottom = currTranslateY + (stickerHeight * currScale / parentScaleY() * 0.5f)
+        val stickerLeft = currTranslateX - (stickerWidth * currScale / parentScaleX() *    0.3f)
+        val stickerTop = currTranslateY - (stickerHeight * currScale / parentScaleY() *    0.3f)
+        val stickerRight = currTranslateX + (stickerWidth * currScale / parentScaleX() *   0.3f)
+        val stickerBottom = currTranslateY + (stickerHeight * currScale / parentScaleY() * 0.3f)
         stickerRectF.set(stickerLeft, stickerTop, stickerRight, stickerBottom)
         val borderLeft = stickerRectF.left - RECT_ROUND
         val borderTop = stickerRectF.top - RECT_ROUND
@@ -225,14 +227,18 @@ class StickerLayer(
 
     private fun computeSpanVector(event: MotionEvent) {
         if (pointerIndexId0 != INVALID_POINTER_ID && pointerIndexId1 != INVALID_POINTER_ID) {
-            val cx0 = event.getX(pointerIndexId0)
-            val cy0 = event.getY(pointerIndexId0)
-            val cx1 = event.getX(pointerIndexId1)
-            val cy1 = event.getY(pointerIndexId1)
-            val cvx = cx1 - cx0
-            val cvy = cy1 - cy0
-            if (!cvx.isNaN() && !cvy.isNaN()) {
-                currSpanVector.set(cvx, cvy)
+            try {
+                val cx0 = event.getX(pointerIndexId0)
+                val cy0 = event.getY(pointerIndexId0)
+                val cx1 = event.getX(pointerIndexId1)
+                val cy1 = event.getY(pointerIndexId1)
+                val cvx = cx1 - cx0
+                val cvy = cy1 - cy0
+                if (!cvx.isNaN() && !cvy.isNaN()) {
+                    currSpanVector.set(cvx, cvy)
+                }
+            }catch (ex: IllegalArgumentException){
+                Log.e("StickerLayer", ex.toString())
             }
         }
     }

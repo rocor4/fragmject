@@ -59,7 +59,7 @@ class PicturePreviewDialog : FullDialog() {
         dialog?.window?.apply {
             setDimAmount(0f)
             attributes.gravity = Gravity.END
-            setWindowAnimations(R.style.AnimRight)
+            setWindowAnimations(com.example.fragment.library.base.R.style.AnimRight)
         }
         initView()
         initViewModel()

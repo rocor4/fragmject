@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace 'com.example.fragment.library.base'
-    compileSdk Integer.valueOf(gradle.compileSdkVersion)
+    compileSdk 33
 
     defaultConfig {
-        minSdk Integer.valueOf(gradle.minSdkVersion)
-        targetSdk Integer.valueOf(gradle.targetSdkVersion)
+        minSdk 21
+        targetSdk 31
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -87,7 +87,7 @@ dependencies {
     api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     api "com.squareup.retrofit2:retrofit:2.9.0"
     // leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
     // 单元测试
     testImplementation "junit:junit:$junit_version"
     testImplementation "io.mockk:mockk:$mockk_version"

@@ -66,7 +66,7 @@ class PictureSelectorAdapter : BaseAdapter<MediaBean>() {
             binding.root.setBackgroundColor(
                 ContextCompat.getColor(
                     binding.image.context,
-                    R.color.black
+                    com.example.fragment.library.base.R.color.black
                 )
             )
             binding.image.layoutParams.apply {
@@ -79,7 +79,7 @@ class PictureSelectorAdapter : BaseAdapter<MediaBean>() {
             binding.root.setBackgroundColor(
                 ContextCompat.getColor(
                     binding.image.context,
-                    R.color.transparent
+                    com.example.fragment.library.base.R.color.transparent
                 )
             )
             binding.image.layoutParams.apply {

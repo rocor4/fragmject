@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace 'com.example.miaow.picture'
-    compileSdk Integer.valueOf(gradle.compileSdkVersion)
+    compileSdk 33
 
     defaultConfig {
-        minSdk Integer.valueOf(gradle.minSdkVersion)
-        targetSdk Integer.valueOf(gradle.targetSdkVersion)
+        minSdk 21
+        targetSdk 31
     }
 
     viewBinding {
