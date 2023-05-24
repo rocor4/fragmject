@@ -44,7 +44,7 @@ fun Context.getBitmapFromPath(path: String, targetWidth: Int = 0): Bitmap? {
 
 fun Context.getBitmapFromUri(uri: Uri, targetWidth: Int = 0): Bitmap? {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-        return null
+        return BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
     }
     if (ContentResolver.SCHEME_CONTENT != uri.scheme && ContentResolver.SCHEME_FILE != uri.scheme) {
         return null
